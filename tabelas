@@ -1,0 +1,58 @@
+create table public.quarto(
+	quartoid serial,
+	numeroquarto  varchar(30)not null,
+	tipoquarto varchar(50) not null,
+	descricao varchar(100) not null,
+	disponivel boolean,
+	valordiaria numeric not null,
+	constraint quarto_quartoid_pk primary key(quartoid)
+);
+
+create table public.pessoa(
+	pessoaid serial,
+	cpf int not null,
+	nomecompleto varchar(30) not null,
+	endereco varchar(30) not null,
+	telefone varchar(30) not null,
+	email varchar(30) not null,
+	constraint  pessoa_pessoaid_pk  primary  key(pessoaid)
+);
+create table public.produto(
+	produtoid serial,
+	tipoproduto  varchar(30) not  null,
+	valorunitario  numeric not null,
+	descricao  varchar(30) not null,
+	constraint produto_produtoid_pk primary key(produtoid)
+
+)
+
+create table public.hospedagemproduto(
+	hospedagemprodutoid serial,
+	hospedagemid integer,
+	produtoid integer,
+	quantidadeconsumo integer,
+	totalconsumo numeric,
+	constraint hospedagemproduto_hospedagemprodutoid_pk primary key(hospedagemprodutoid),
+	constraint hospedagemproduto_hospedagemid_fk foreign key(hospedagemid)
+	references hospedagem(hospedagemid),
+	constraint hospedagenproduto_produtoid_fk foreign key(produtoid)
+	references produto(produtoid),
+)
+
+create table public.hospedagem(
+	hospedagemid serial,
+	quartoid integer,
+	pessoaid  integer,
+	checkin  date,
+	checout  date,
+	horacheckin time,
+	horacheckout time,	
+	valortotal  numeric,
+	periodo  varchar(10),
+	constraint  hospedagem_hospedagemid_pk primary  key(hospedagemid),
+	constraint hospedagem_quartoid_fk foreign key(quartoid)
+	references quarto(quartoid),
+	constraint hospedagem_pessoaid_fk foreign key(pessoaid)
+	references pessoa(pessoaid)
+	
+)
